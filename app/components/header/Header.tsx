@@ -4,9 +4,12 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { HeaderActionButtons } from './HeaderActionButtons.client';
 import { ChatDescription } from '~/lib/persistence/ChatDescription.client';
+import { themeStore, toggleTheme } from '~/lib/stores/theme';
 
 export function Header() {
   const chat = useStore(chatStore);
+  const theme = useStore(themeStore);
+  const isDark = theme === 'dark';
 
   return (
     <header
@@ -15,15 +18,36 @@ export function Header() {
         'border-bolt-elements-borderColor': chat.started,
       })}
     >
+      {/* Logo + sidebar icon */}
       <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary cursor-pointer">
         <div className="i-ph:sidebar-simple-duotone text-xl" />
-        <a href="/" className="text-2xl font-semibold text-accent flex items-center">
-          {/* <span className="i-bolt:logo-text?mask w-[46px] inline-block" /> */}
-          <img src="/logo-light-styled.png" alt="logo" className="w-[90px] inline-block dark:hidden" />
-          <img src="/logo-dark-styled.png" alt="logo" className="w-[90px] inline-block hidden dark:block" />
+        <a href="/" className="flex items-center" aria-label="AI.Coder home">
+          {/* Inline SVG logo — uses currentColor so it auto-adapts to light/dark */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 160 40"
+            fill="none"
+            className="h-8 w-auto text-bolt-elements-textPrimary"
+          >
+            <rect width="160" height="40" rx="8" fill="currentColor" fillOpacity="0.08" />
+            <text
+              x="12"
+              y="27"
+              fontFamily="'Inter', Arial, sans-serif"
+              fontSize="20"
+              fontWeight="700"
+              fill="currentColor"
+              letterSpacing="-0.5"
+            >
+              AI.Coder
+            </text>
+            <circle cx="148" cy="20" r="4" fill={isDark ? '#a3a3a3' : '#525252'} />
+          </svg>
         </a>
       </div>
-      {chat.started && ( // Display ChatDescription and HeaderActionButtons only when the chat has started.
+
+      {/* Chat description (center) */}
+      {chat.started && (
         <>
           <span className="flex-1 px-4 truncate text-center text-bolt-elements-textPrimary">
             <ClientOnly>{() => <ChatDescription />}</ClientOnly>
@@ -37,6 +61,42 @@ export function Header() {
           </ClientOnly>
         </>
       )}
+
+      {/* Spacer when chat not started */}
+      {!chat.started && <div className="flex-1" />}
+
+      {/* Dark/Light mode toggle — always visible */}
+      <button
+        onClick={toggleTheme}
+        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        className={classNames(
+          'ml-2 flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200',
+          'border border-bolt-elements-borderColor',
+          'hover:bg-bolt-elements-item-backgroundActive',
+          'text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary',
+        )}
+      >
+        {isDark ? (
+          /* Sun icon — click to go light */
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        ) : (
+          /* Moon icon — click to go dark */
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        )}
+      </button>
     </header>
   );
 }

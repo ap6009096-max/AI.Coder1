@@ -1,4 +1,4 @@
-appId: com.stackblitz.bolt.diy
+appId: com.stackblitz.AI.Coder
 productName: Bolt Local
 directories:
   buildResources: build
