@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs, type LoaderFunctionArgs, json } from '@remix-run/cloudflare';
+import { type ActionFunctionArgs, type LoaderFunctionArgs, json } from '@remix-run/node';
 import type { VercelProjectInfo } from '~/types/vercel';
 
 // Function to detect framework from project files
@@ -392,7 +392,7 @@ export async function action({ request }: ActionFunctionArgs) {
       deploymentConfig.outputDirectory = 'dist';
     } else if (detectedFramework === 'remix') {
       deploymentConfig.buildCommand = 'npm run build';
-      deploymentConfig.outputDirectory = 'public';
+      deploymentConfig.outputDirectory = 'build';
     } else if (detectedFramework === 'nuxt') {
       deploymentConfig.buildCommand = 'npm run build';
       deploymentConfig.outputDirectory = '.output';

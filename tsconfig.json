@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": [
-      "@remix-run/cloudflare",
+      "@remix-run/node",
       "vite/client",
-      "@cloudflare/workers-types/2023-07-01",
       "@types/dom-speech-recognition",
       "electron"
     ],
@@ -22,7 +22,16 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "~/components/*": ["./app/components/*"],
+      "~/lib/*": ["./app/lib/*"],
+      "~/routes/*": ["./app/routes/*"],
+      "~/types/*": ["./app/types/*"],
+      "~/utils/*": ["./app/utils/*"],
+      "~/styles/*": ["./app/styles/*"],
+      "~/hooks/*": ["./app/lib/hooks/*"],
+      "~/stores/*": ["./app/lib/stores/*"],
+      "~/services/*": ["./app/lib/services/*"]
     },
     // vite takes care of building everything, not tsc
     "noEmit": true
