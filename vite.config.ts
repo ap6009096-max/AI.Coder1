@@ -18,6 +18,9 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
+      rollupOptions: {
+        external: ['util/types', 'node:util/types'],
+      },
     },
     plugins: [
       nodePolyfills({
