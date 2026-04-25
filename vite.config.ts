@@ -16,10 +16,15 @@ export default defineConfig((config) => {
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     },
+    resolve: {
+      alias: {
+        'util/types': 'node:util',
+      },
+    },
     build: {
       target: 'esnext',
       rollupOptions: {
-        external: ['util/types', 'node:util/types'],
+        external: ['util/types', 'node:util/types', 'node:crypto', 'node:fs', 'node:fs/promises', 'node:os', 'node:path', 'node:events', 'node:assert', 'node:net', 'node:http', 'node:url', 'node:worker_threads', 'node:zlib', 'node:perf_hooks', 'node:dns', 'node:http2', 'node:async_hooks', 'node:console', 'node:diagnostics_channel', 'node:querystring', 'node:tls', 'crypto'],
       },
     },
     plugins: [
